@@ -21,7 +21,7 @@
   },
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": ["*.ts", "*.tsx", "*.js"],
       "rules": {
         "@typescript-eslint/no-shadow": ["error"],
         "no-shadow": "off",
@@ -33,6 +33,9 @@
         "react/no-array-index-key": "off",
         "react/display-name": "off",
         "react/react-in-jsx-scope": "off",
+
+        // typescript rules
+        "@typescript-eslint/no-var-requires": "off",
 
         //common rules
         "no-unused-vars": "off",
