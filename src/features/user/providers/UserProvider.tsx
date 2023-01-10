@@ -1,13 +1,16 @@
 import { AxiosResponse } from "axios";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import API from "features/api";
 
 import { User } from "../types";
 
+export const USER_STORAGE_KEY = "@user_storage_key";
+
 interface UserContextData {
-  user?: User;
-  setUser: (u: User) => void;
+  user?: User | null;
+  setUser: (u: User | null) => void;
   login: (
     email: string,
     password: string
@@ -22,7 +25,7 @@ export const UserContext = createContext<UserContextData>(
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>();
 
   const login = async (email: string, password: string) =>
     await API.post<{ token: string }>("login/", {
@@ -30,7 +33,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       password,
     });
 
-  const logout = async () => await API.post("logout/");
+  const logout = async () => {
+    setUser(null);
+    await AsyncStorage.removeItem(USER_STORAGE_KEY);
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (user) return;
+
+      const userFromStorage = await AsyncStorage.getItem(USER_STORAGE_KEY);
+
+      if (!userFromStorage) return;
+
+      setUser(JSON.parse(userFromStorage));
+    })();
+  }, []);
 
   return (
     <UserContext.Provider

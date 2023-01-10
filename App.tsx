@@ -1,7 +1,7 @@
 import { NativeBaseProvider } from "native-base";
 
-import { UserProvider } from "features/auth/providers/UserProvider";
 import NavigationContainer from "features/navigation/NavigationContainer";
+import { UserProvider } from "features/user/providers/UserProvider";
 
 export default function App() {
   return (

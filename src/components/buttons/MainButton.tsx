@@ -11,7 +11,7 @@ const MainButton: React.FC<Props> = ({ text, ...props }) => (
     borderRadius={50}
     px={"29px"}
     py={"18px"}
-    _text={{ fontWeight: "600", fontSize: 16 }}
+    _text={{ fontWeight: "600", fontSize: 16, textAlign: "center" }}
     {...props}
   >
     {text}

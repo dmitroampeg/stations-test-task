@@ -2,12 +2,15 @@ import { Box, Text, Input, VStack, Icon, FormControl } from "native-base";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Logo from "assets/icons/logo.svg";
 import MainButton from "components/buttons/MainButton";
 import ArrowIcon from "components/icons/Arrow";
 import LockIcon from "components/icons/Lock";
 import UsernameIcon from "components/icons/Username";
-import useUser from "features/auth/providers/UserProvider";
+import useUser, {
+  USER_STORAGE_KEY,
+} from "features/user/providers/UserProvider";
 
 const Login: React.FC = () => {
   const { login, setUser } = useUser();
@@ -21,8 +24,10 @@ const Login: React.FC = () => {
 
     try {
       const { data } = await login(email, password);
+      const user = { email, token: data?.token };
 
-      setUser({ email, token: data?.token });
+      setUser(user);
+      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
     } catch (e: any) {
       setError(e.response?.data.error as string);
     }

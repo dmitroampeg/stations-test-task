@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import useUser from "features/auth/providers/UserProvider";
+import useUser from "features/user/providers/UserProvider";
 
 import { isNil } from "../../utils";
 
