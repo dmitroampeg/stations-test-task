@@ -1,13 +1,19 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import API from "features/api";
 
 import { STATIONS } from "../mocks";
-import { Station } from "../types";
+import { Station, StationsDictionary } from "../types";
 
 interface StationsContextData {
-  stations?: Station[];
-  setStations: (s: Station[]) => void;
+  stationsMap?: StationsDictionary;
+  setStation: (id: number, v: Partial<Station>) => void;
   getStations: () => Promise<void>;
   isLoading: boolean;
 }
@@ -19,10 +25,10 @@ export const StationsContext = createContext<StationsContextData>(
 export const StationsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [stations, setStations] = useState<Station[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [stationsMap, setStationsMap] = useState<StationsDictionary>();
 
-  const getStations = async () => {
+  const getStations = useCallback(async () => {
     setIsLoading(true);
 
     try {
@@ -30,20 +36,41 @@ export const StationsProvider: React.FC<{ children: React.ReactNode }> = ({
         stations: STATIONS,
       });
 
-      setStations(data.stations);
+      const dataMap = data.stations.reduce(
+        (acc: StationsDictionary, station) => {
+          acc[station.id] = station;
+
+          return acc;
+        },
+        {}
+      );
+
+      setStationsMap(dataMap);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
+
+  const setStation = useCallback(
+    (id: number, updatedValues: Partial<Station>) => {
+      if (!stationsMap) return;
+
+      setStationsMap({
+        ...stationsMap,
+        [id]: { ...stationsMap[id], ...updatedValues },
+      });
+    },
+    [stationsMap]
+  );
 
   useEffect(() => {
     getStations();
-  }, []);
+  }, [getStations]);
 
   return (
     <StationsContext.Provider
-      value={{ stations, setStations, getStations, isLoading }}
+      value={{ stationsMap, setStation, getStations, isLoading }}
     >
       {children}
     </StationsContext.Provider>

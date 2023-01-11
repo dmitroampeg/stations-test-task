@@ -1,5 +1,11 @@
 import { AxiosResponse } from "axios";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import API from "features/api";
@@ -27,16 +33,19 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>();
 
-  const login = async (email: string, password: string) =>
-    await API.post<{ token: string }>("login/", {
-      email,
-      password,
-    });
+  const login = useCallback(
+    async (email: string, password: string) =>
+      await API.post<{ token: string }>("login/", {
+        email,
+        password,
+      }),
+    []
+  );
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     setUser(null);
     await AsyncStorage.removeItem(USER_STORAGE_KEY);
-  };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -48,7 +57,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setUser(JSON.parse(userFromStorage));
     })();
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider

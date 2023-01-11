@@ -1,35 +1,49 @@
 import { Input, Icon, FlatList, Box } from "native-base";
-import React, { useState } from "react";
-import { RefreshControl } from "react-native";
+import React, { useMemo, useState } from "react";
+import { Pressable, RefreshControl } from "react-native";
 
+import { StackScreenProps } from "@react-navigation/stack";
 import SearchIcon from "components/icons/Search";
 import PageTemplate from "components/PageTemplate";
+import { RootStackParamList, Routes } from "features/navigation/types";
 
 import StationCard from "./components/StationCard";
 import useStations from "./providers/StationsProvider";
 import { Station } from "./types";
 
-const Stations: React.FC = () => {
-  const { stations, getStations, isLoading } = useStations();
+const Stations = ({
+  navigation,
+}: StackScreenProps<RootStackParamList, Routes.Stations>) => {
+  const { stationsMap, getStations, isLoading } = useStations();
 
   const [searchFilter, setSearchFilter] = useState("");
 
-  const filteredStations = stations?.filter(
-    (station) =>
-      station.name.toLowerCase().includes(searchFilter) ||
-      `${station.id}`.includes(searchFilter)
-  );
+  const filteredStations = useMemo(() => {
+    if (!stationsMap) return [];
+
+    return Object.values(stationsMap)?.filter(
+      (station) =>
+        station.name.toLowerCase().includes(searchFilter) ||
+        `${station.id}`.includes(searchFilter)
+    );
+  }, [searchFilter, stationsMap]);
 
   const onRefresh = async () => {
     await getStations();
   };
 
   const renderItem = ({ item }: { item: Station }) => (
-    <StationCard name={item.name} id={item.id} />
+    <Pressable
+      onPress={() => {
+        navigation.navigate(Routes.StationDetails, { id: item.id });
+      }}
+    >
+      <StationCard name={item.name} id={item.id} />
+    </Pressable>
   );
 
   return (
-    <PageTemplate>
+    <PageTemplate title="Select Station" hasBackBtn={false}>
       <Input
         h={60}
         bg="#F0F4F5"

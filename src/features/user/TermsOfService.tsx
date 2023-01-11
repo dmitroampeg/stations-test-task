@@ -6,7 +6,7 @@ import PageTemplate from "components/PageTemplate";
 
 const TermsOfService: React.FC = () => {
   return (
-    <PageTemplate>
+    <PageTemplate hasLogoIcon={true} hasBackBtn={false}>
       <Text fontWeight={700} fontSize={21} textAlign={"center"}>
         Disclaimer
       </Text>
