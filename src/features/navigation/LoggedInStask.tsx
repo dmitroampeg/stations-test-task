@@ -1,7 +1,7 @@
-import { Text } from "native-base";
 import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
+import Stations from "features/stations/Stations";
 import useUser from "features/user/providers/UserProvider";
 import TermsOfService from "features/user/TermsOfService";
 
@@ -19,10 +19,7 @@ export default () => {
       }}
     >
       {user?.hasAcceptedTerms ? (
-        <Stack.Screen
-          name={Routes.Stations}
-          component={() => <Text>Stations</Text>}
-        />
+        <Stack.Screen name={Routes.Stations} component={Stations} />
       ) : (
         <Stack.Screen name={Routes.TermsOfService} component={TermsOfService} />
       )}
