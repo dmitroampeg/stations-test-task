@@ -19,7 +19,7 @@ export default () => {
         headerShown: false,
       }}
     >
-      {!user?.hasAcceptedTerms ? (
+      {user?.hasAcceptedTerms ? (
         <>
           <Stack.Screen name={Routes.Stations} component={Stations} />
           <Stack.Screen

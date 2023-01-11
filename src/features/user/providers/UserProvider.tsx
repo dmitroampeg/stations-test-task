@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import uuid from "react-native-uuid";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import API from "features/api";
@@ -20,8 +21,9 @@ interface UserContextData {
   login: (
     email: string,
     password: string
-  ) => Promise<AxiosResponse<{ token: string }>>;
+  ) => Promise<AxiosResponse<{ token: string; id: string }>>;
   logout: () => void;
+  updateUser: (id: string, user: Partial<User>) => Promise<AxiosResponse<void>>;
 }
 
 export const UserContext = createContext<UserContextData>(
@@ -35,9 +37,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = useCallback(
     async (email: string, password: string) =>
-      await API.post<{ token: string }>("login/", {
+      await API.post<{ token: string; id: string }>("login/", {
         email,
         password,
+        id: uuid.v4(),
       }),
     []
   );
@@ -46,6 +49,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(null);
     await AsyncStorage.removeItem(USER_STORAGE_KEY);
   }, []);
+
+  const updateUser = useCallback(
+    async (id: string, updatedUser: Partial<User>) =>
+      await API.patch(`login/${id}`, {
+        updatedUser,
+      }),
+    []
+  );
 
   useEffect(() => {
     (async () => {
@@ -66,6 +77,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser,
         login,
         logout,
+        updateUser,
       }}
     >
       {children}

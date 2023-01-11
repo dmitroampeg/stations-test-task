@@ -3,8 +3,24 @@ import React from "react";
 
 import MainButton from "components/buttons/MainButton";
 import PageTemplate from "components/PageTemplate";
+import useUser from "features/user/providers/UserProvider";
 
 const TermsOfService: React.FC = () => {
+  const { updateUser, setUser, user } = useUser();
+
+  if (!user) return null;
+
+  const onAccept = async () => {
+    try {
+      const data = { hasAcceptedTerms: true };
+
+      await updateUser(user.id, data);
+      setUser({ ...user, ...data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <PageTemplate hasLogoIcon={true} hasBackBtn={false}>
       <Text fontWeight={700} fontSize={21} textAlign={"center"}>
@@ -25,6 +41,7 @@ const TermsOfService: React.FC = () => {
         text="I Accept"
         maxW="100%"
         alignItems={"center"}
+        onPress={onAccept}
       />
     </PageTemplate>
   );

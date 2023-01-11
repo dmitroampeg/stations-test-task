@@ -24,7 +24,7 @@ const Login: React.FC = () => {
 
     try {
       const { data } = await login(email, password);
-      const user = { email, token: data?.token };
+      const user = { email, ...data };
 
       setUser(user);
       await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
