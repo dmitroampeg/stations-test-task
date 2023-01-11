@@ -1,4 +1,4 @@
-import { Box, Pressable, Text, Image } from "native-base";
+import { Box, Pressable, Image } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -8,6 +8,7 @@ import Logo from "assets/icons/logo.svg";
 import { RootStackParamList, Routes } from "features/navigation/types";
 
 import ArrowIcon from "./icons/Arrow";
+import { MainText } from "./StyledText";
 
 interface Props {
   title?: string;
@@ -37,15 +38,15 @@ const PageTemplate: React.FC<Props> = ({
       {hasLogoIcon && <Logo />}
       <Box w={"100%"}>
         {title?.length && (
-          <Text
+          <MainText
             px={"50px"}
             mb={"56px"}
-            fontWeight={"700"}
+            fontWeight={"Bold"}
             fontSize={21}
             textAlign="center"
           >
             {title}
-          </Text>
+          </MainText>
         )}
         {hasBackBtn && (
           <Pressable

@@ -1,5 +1,5 @@
 import { differenceInSeconds } from "date-fns";
-import { Box, HStack, Text, Circle } from "native-base";
+import { Box, HStack, Circle } from "native-base";
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { StyleSheet, InteractionManager } from "react-native";
 
@@ -7,6 +7,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import MainButton from "components/buttons/MainButton";
 import ShortArrow from "components/icons/ShortArrow";
 import PageTemplate from "components/PageTemplate";
+import { MainText } from "components/StyledText";
 import { RootStackParamList, Routes } from "features/navigation/types";
 import { isNil } from "utils/index";
 
@@ -60,9 +61,9 @@ const StationDetails = ({
   return (
     <PageTemplate title="Details">
       <Box width={"100%"}>
-        <Text fontWeight={700} fontSize={21}>
+        <MainText fontWeight={"Bold"} fontSize={21}>
           Station Subscribed
-        </Text>
+        </MainText>
         <Box
           mt={15}
           px={25}
@@ -71,34 +72,40 @@ const StationDetails = ({
           borderRadius={16}
           style={styles.shadow}
         >
-          <Text fontWeight={"600"} fontSize={16} lineHeight={24}>
+          <MainText fontWeight={"SemiBold"} fontSize={16} lineHeight={24}>
             ACTIVE FROM
-          </Text>
+          </MainText>
           <HStack
             justifyContent={"space-between"}
             alignItems="center"
             flexWrap="wrap"
           >
             <HStack mt={"13px"} space={"5px"}>
-              <Text fontWeight={"700"} fontSize={36} letterSpacing={0.4}>
+              <MainText fontWeight={"Bold"} fontSize={36} letterSpacing={0.4}>
                 {activityCounter}
-              </Text>
-              <Text fontWeight={"600"} fontSize={11} letterSpacing={0.4}>
+              </MainText>
+              <MainText
+                fontWeight={"SemiBold"}
+                fontSize={11}
+                letterSpacing={0.4}
+                pt={"7px"}
+              >
                 seconds
-              </Text>
+              </MainText>
             </HStack>
             <MainButton
-              text={!station?.activeFrom ? "Stop" : "Start"}
+              text={station?.activeFrom ? "Stop" : "Start"}
               h={"38px"}
               px={"45px"}
               py={"5px"}
               onPress={onStart}
+              textStyle={{ fontWeight: "SemiBold" }}
             />
           </HStack>
           <HStack mt={"4px"} space={11} alignItems="center">
-            <Text fontWeight={"600"} fontSize={10} letterSpacing={0.4}>
+            <MainText fontWeight={"SemiBold"} fontSize={10} letterSpacing={0.4}>
               MORE INFO
-            </Text>
+            </MainText>
             <Circle size={21} bg="#E2E8E1">
               <ShortArrow />
             </Circle>

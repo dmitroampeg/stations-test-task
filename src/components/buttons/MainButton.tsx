@@ -1,20 +1,30 @@
 import { Button, IButtonProps } from "native-base";
 import React from "react";
 
+import { MainText, MainTextProps } from "components/StyledText";
+
 interface Props extends IButtonProps {
   text: string;
+  textStyle?: MainTextProps;
 }
 
-const MainButton: React.FC<Props> = ({ text, ...props }) => (
+const MainButton: React.FC<Props> = ({ text, textStyle, ...props }) => (
   <Button
     bgColor={"#DD1D21"}
     borderRadius={50}
     px={"29px"}
     py={"18px"}
-    _text={{ fontWeight: "600", fontSize: 16, textAlign: "center" }}
     {...props}
   >
-    {text}
+    <MainText
+      style={[
+        { fontSize: 16, color: "#fff", textAlign: "center" },
+        textStyle?.style,
+      ]}
+      fontWeight={textStyle?.fontWeight}
+    >
+      {text}
+    </MainText>
   </Button>
 );
 

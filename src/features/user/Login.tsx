@@ -16,6 +16,7 @@ import MainButton from "components/buttons/MainButton";
 import ArrowIcon from "components/icons/Arrow";
 import LockIcon from "components/icons/Lock";
 import UsernameIcon from "components/icons/Username";
+import { MainText } from "components/StyledText";
 import useUser, {
   USER_STORAGE_KEY,
 } from "features/user/providers/UserProvider";
@@ -51,15 +52,15 @@ const Login: React.FC = () => {
           bottom={"0%"}
         />
         <Logo />
-        <Text
+        <MainText
           mt={44}
-          fontWeight={"700"}
+          fontWeight={"Bold"}
           fontSize={21}
           lineHeight={32}
           color="#000"
         >
           Login
-        </Text>
+        </MainText>
         <FormControl>
           <VStack w={"100%"} mt={54} space={28}>
             <Input
@@ -71,6 +72,7 @@ const Login: React.FC = () => {
               InputLeftElement={
                 <Icon as={<UsernameIcon />} mb={1} mr={1} ml={2} />
               }
+              fontWeight={"700"}
             />
             <Input
               value={password}
@@ -91,10 +93,16 @@ const Login: React.FC = () => {
             text="Login"
             rightIcon={<Icon as={<ArrowIcon />} ml={"8px"} />}
             onPress={handleLogin}
+            textStyle={{ fontWeight: "SemiBold" }}
           />
-          <Text mt={23} fontWeight={"700"} fontSize={12} textAlign="center">
+          <MainText
+            mt={23}
+            fontWeight={"Bold"}
+            fontSize={12}
+            textAlign="center"
+          >
             Forgot Password?
-          </Text>
+          </MainText>
         </FormControl>
       </Box>
     </SafeAreaView>
