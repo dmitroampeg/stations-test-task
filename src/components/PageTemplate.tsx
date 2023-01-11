@@ -1,4 +1,4 @@
-import { Box, Pressable, Text } from "native-base";
+import { Box, Pressable, Text, Image } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -28,6 +28,12 @@ const PageTemplate: React.FC<Props> = ({
 
   return (
     <Box flex={1} bg="#fff" alignItems={"center"} pt={top + 50}>
+      <Image
+        source={require("assets/BG.png")}
+        alt="station"
+        position={"absolute"}
+        top={"-8%"}
+      />
       {hasLogoIcon && <Logo />}
       <Box w={"100%"}>
         {title?.length && (

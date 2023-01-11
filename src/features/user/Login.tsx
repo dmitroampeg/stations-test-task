@@ -1,4 +1,12 @@
-import { Box, Text, Input, VStack, Icon, FormControl } from "native-base";
+import {
+  Box,
+  Text,
+  Input,
+  VStack,
+  Icon,
+  FormControl,
+  Image,
+} from "native-base";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 
@@ -36,6 +44,12 @@ const Login: React.FC = () => {
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <Box h={"100%"} alignItems="center" px={55} pt={125}>
+        <Image
+          source={require("assets/BG.png")}
+          alt="station"
+          position={"absolute"}
+          bottom={"0%"}
+        />
         <Logo />
         <Text
           mt={44}
@@ -72,10 +86,15 @@ const Login: React.FC = () => {
 
           <MainButton
             mt={34}
+            mx="auto"
+            alignSelf="flex-start"
             text="Login"
             rightIcon={<Icon as={<ArrowIcon />} ml={"8px"} />}
             onPress={handleLogin}
           />
+          <Text mt={23} fontWeight={"700"} fontSize={12} textAlign="center">
+            Forgot Password?
+          </Text>
         </FormControl>
       </Box>
     </SafeAreaView>
